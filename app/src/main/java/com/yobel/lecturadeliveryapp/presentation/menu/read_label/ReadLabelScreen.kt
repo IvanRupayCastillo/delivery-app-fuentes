@@ -56,6 +56,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.zxing.integration.android.IntentIntegrator
 import com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.model.Enterprise
 import com.yobel.lecturadeliveryapp.PortraitCaptureActivity
+import com.yobel.lecturadeliveryapp.Printer
 import com.yobel.lecturadeliveryapp.domain.model.Label
 import com.yobel.lecturadeliveryapp.presentation.common.AlertCustom
 import com.yobel.lecturadeliveryapp.presentation.common.Header
@@ -303,6 +304,15 @@ fun ReadLabelScreen(
         state.success?.let { label ->
             CardLabel(
                 label = label
+            )
+            Printer.sendZplOverBluetooth(
+                "8C:D5:4A:10:D4:7F",
+                label.sequence,
+                label.zone1,
+                label.zone2,
+                label.route,
+                label.upload,
+                label.trackId
             )
         }
 
