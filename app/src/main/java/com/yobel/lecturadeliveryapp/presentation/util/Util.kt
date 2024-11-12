@@ -10,8 +10,6 @@ class Util {
 
     companion object {
 
-
-
         @SuppressLint("MissingPermission")
         fun isPrinterConnected(printerAddress: String, context2: Context): Boolean {
             val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
@@ -19,15 +17,15 @@ class Util {
 
             pairedDevices?.forEach { device ->
                 if (device.address == printerAddress) {
-                    Toast.makeText(context2,"true",Toast.LENGTH_LONG).show()
+                    //Toast.makeText(context2,"true",Toast.LENGTH_LONG).show()
                     return true // La impresora está conectada
-
-
                 }
             }
-            Toast.makeText(context2,"false",Toast.LENGTH_LONG).show()
+            //Toast.makeText(context2,"false",Toast.LENGTH_LONG).show()
             return false // La impresora no está conectada
 
         }
+
+        val PRINTER_ADDRESS = "8C:D5:4A:10:D4:7F"
     }
 }

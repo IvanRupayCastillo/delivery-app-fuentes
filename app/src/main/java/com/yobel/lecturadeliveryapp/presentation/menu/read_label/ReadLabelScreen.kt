@@ -1,12 +1,11 @@
 package com.yobel.lecturadeliveryapp.presentation.menu.read_label
 
 import android.app.Activity
-import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,8 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -31,7 +28,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,14 +45,14 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.zxing.integration.android.IntentIntegrator
 import com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.model.Enterprise
 import com.yobel.lecturadeliveryapp.PortraitCaptureActivity
-import com.yobel.lecturadeliveryapp.Printer
+import com.yobel.lecturadeliveryapp.presentation.util.Printer
 import com.yobel.lecturadeliveryapp.domain.model.Label
 import com.yobel.lecturadeliveryapp.presentation.common.AlertCustom
 import com.yobel.lecturadeliveryapp.presentation.common.Header
@@ -64,6 +60,7 @@ import com.yobel.lecturadeliveryapp.presentation.common.LoadingComponent
 import com.yobel.lecturadeliveryapp.presentation.common.OutlinedTextFieldComponent
 import com.yobel.lecturadeliveryapp.presentation.common.SpacerComponent
 import com.yobel.lecturadeliveryapp.presentation.common.TextComponent
+import com.yobel.lecturadeliveryapp.presentation.util.Util
 import com.yobel.lecturadeliveryapp.ui.theme.BackgroundCard
 import com.yobel.lecturadeliveryapp.ui.theme.Primary
 import com.yobel.lecturadeliveryapp.ui.theme.Secundary
@@ -124,7 +121,54 @@ fun ReadLabelScreen(
         }
     }
 
+    var showDialogPrinter by remember {
+        mutableStateOf(false)
+    }
 
+    var showDialogValidationPrinter by remember {
+        mutableStateOf(false)
+    }
+
+    if (showDialogPrinter) {
+        AlertCustom(
+            title = buildAnnotatedString {
+                append("MENSAJE DE NOTIFICACION")
+            },
+            content = buildAnnotatedString {
+                append("Recuerde que para imprimir las etiquetas debe aceptar los permisos")
+            },
+            dismiss = {
+                showDialogPrinter = false
+            }
+        )
+    }
+
+    if (showDialogValidationPrinter) {
+        AlertCustom(
+            title = buildAnnotatedString {
+                append("MENSAJE DE NOTIFICACION")
+            },
+            content = buildAnnotatedString {
+                append("La impresora no esta conectada. Compruebe la conexión")
+            },
+            dismiss = {
+                showDialogValidationPrinter = false
+            }
+        )
+    }
+
+    val requestBluetoothPermissions = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allPermissionsGranted =
+            permissions[android.Manifest.permission.BLUETOOTH_CONNECT] == true &&
+                    permissions[android.Manifest.permission.BLUETOOTH_SCAN] == true
+        if (allPermissionsGranted) {
+            //activePrinter = Util.isPrinterConnected(Util.PRINTER_ADDRESS, context)
+        } else {
+            showDialogPrinter = true
+        }
+    }
 
 
 
@@ -305,15 +349,39 @@ fun ReadLabelScreen(
             CardLabel(
                 label = label
             )
-            Printer.sendZplOverBluetooth(
-                "8C:D5:4A:10:D4:7F",
-                label.sequence,
-                label.zone1,
-                label.zone2,
-                label.route,
-                label.upload,
-                label.trackId
-            )
+            if(checkPrint) {
+                val allPermissionsGranted = ContextCompat.checkSelfPermission(
+                    context,
+                    android.Manifest.permission.BLUETOOTH_CONNECT
+                ) == PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(
+                            context,
+                            android.Manifest.permission.BLUETOOTH_SCAN
+                        ) == PackageManager.PERMISSION_GRANTED
+
+                if (allPermissionsGranted) {
+                    if(Util.isPrinterConnected(Util.PRINTER_ADDRESS, context)) {
+                        Printer.sendZplOverBluetooth(
+                            Util.PRINTER_ADDRESS,
+                            label.sequence,
+                            label.zone1,
+                            label.zone2,
+                            label.route,
+                            label.upload,
+                            label.trackId
+                        )
+                    }else{
+                        showDialogValidationPrinter = true
+                    }
+                } else {
+                    requestBluetoothPermissions.launch(
+                        arrayOf(
+                            android.Manifest.permission.BLUETOOTH_CONNECT,
+                            android.Manifest.permission.BLUETOOTH_SCAN
+                        )
+                    )
+                }
+            }
         }
 
 

@@ -42,6 +42,7 @@ fun SetupNavigationMenu(
                 enterprise = enterprise,
                 userName = userName,
                 userCode = userCode,
+                checkPrint = checkPrint
             )
         }
 

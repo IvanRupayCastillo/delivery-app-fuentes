@@ -1,15 +1,14 @@
-package com.yobel.lecturadeliveryapp;
+package com.yobel.lecturadeliveryapp.presentation.util;
 
 import android.os.Looper;
 
 import com.zebra.sdk.comm.BluetoothConnection;
-import com.zebra.sdk.comm.BluetoothConnectionInsecure;
 import com.zebra.sdk.comm.Connection;
 
 public class Printer {
 
 
-    public static void sendZplOverBluetooth2(final String theBtMacAddress) {
+    public static void sendZplOverBluetoothDemo1(final String theBtMacAddress) {
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -86,7 +85,7 @@ public class Printer {
     }
 
 
-    public static void sendZplOverBluetooth22(final String theBtMacAddress) {
+    public static void sendZplOverBluetoothDemo2(final String theBtMacAddress) {
         new Thread(new Runnable() {
             public void run() {
                 try {

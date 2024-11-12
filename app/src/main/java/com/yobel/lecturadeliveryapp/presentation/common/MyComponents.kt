@@ -198,8 +198,11 @@ fun TopBarComponent(
     modifier: Modifier = Modifier,
     title: String = "",
     imageVector: ImageVector,
+    active:Boolean,
+    checkPrint:Boolean,
     onIconClick: () -> Unit,
-    onLogOutClick:() -> Unit
+    onLogOutClick:() -> Unit,
+    onClickTestPrinter:() -> Unit,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -209,6 +212,16 @@ fun TopBarComponent(
             }
         },
         actions = {
+            if(checkPrint) {
+                IconButton(onClick = { onClickTestPrinter() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_red_ball),
+                        contentDescription = "Inactive",
+                        modifier = Modifier.padding(end = 8.dp),
+                        tint = if (active) Color.Green else Color.Red
+                    )
+                }
+            }
             IconButton(onClick = { onLogOutClick() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Logout,

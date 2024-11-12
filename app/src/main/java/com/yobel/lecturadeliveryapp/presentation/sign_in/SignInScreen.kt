@@ -219,10 +219,10 @@ fun SignInContent(
 ) {
 
     var user by remember {
-        mutableStateOf("")
+        mutableStateOf("IRUPAY")
     }
     var password by remember {
-        mutableStateOf("")
+        mutableStateOf("IRUPAY")
     }
     var visualTransformation by remember {
         mutableStateOf(true)
