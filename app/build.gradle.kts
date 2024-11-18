@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.yobel.lecturadeliveryapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -113,5 +113,30 @@ dependencies {
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
 
+    //Room
+    implementation("androidx.room:room-ktx:2.5.1")
+    implementation("androidx.room:room-runtime:2.5.1")
+    kapt("androidx.room:room-compiler:2.5.1")
+
+    //WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
+
+    //Hilt-WorkManager
+    implementation("androidx.hilt:hilt-work:1.0.0")
+
+    // Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
+
+    // optional - RxJava2 support
+    implementation("androidx.work:work-rxjava2:2.7.1")
+
+    // optional - GCMNetworkManager support
+    implementation("androidx.work:work-gcm:2.7.1")
+
+    // optional - Test helpers
+    androidTestImplementation("androidx.work:work-testing:2.7.1")
+
+    // optional - Multiprocess support
+    implementation("androidx.work:work-multiprocess:2.7.1")
 
 }

@@ -32,7 +32,8 @@ data class LabelDto(
     @SerializedName("Ruta") val route:String,
     @SerializedName("Carga") val upload:String,
     @SerializedName("TrackId") val trackId:String,
-    @SerializedName("Contenedor") val container:String,
+    @SerializedName("Contenedor") val container:String?,
+    @SerializedName("Fecha") val date:String,
 )
 
 data class ErrorResponse(

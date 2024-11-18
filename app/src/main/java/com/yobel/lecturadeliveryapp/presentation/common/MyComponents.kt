@@ -1,5 +1,6 @@
 package com.yobel.lecturadeliveryapp.presentation.common
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.icu.text.CaseMap.Title
 import androidx.annotation.DrawableRes
@@ -24,6 +25,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
@@ -45,6 +48,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -62,6 +66,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -84,6 +89,7 @@ import com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.model.Enterprise
 import com.yobel.lecturadeliveryapp.R
 import com.yobel.lecturadeliveryapp.ui.theme.BackgroundAlert
 import com.yobel.lecturadeliveryapp.ui.theme.Primary
+import java.util.Calendar
 
 @Composable
 fun ImageComponent(
@@ -509,5 +515,120 @@ fun Header(
                 .padding(horizontal = 64.dp)
                 .border(width = 4.dp, color = Color.Black)
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePickerWithIcon(
+    modifier: Modifier = Modifier,
+    onDateSelected: (String) -> Unit = {}
+) {
+    // Obtener la fecha actual
+    val calendar = Calendar.getInstance()
+
+    // Estados para la fecha seleccionada
+    var selectedYear by remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
+    var selectedMonth by remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
+    var selectedDay by remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
+    var selectedDate by remember {
+        mutableStateOf("${selectedYear}-${String.format("%02d", selectedMonth + 1)}-${String.format("%02d", selectedDay)}")
+    }
+
+    // Mostrar el diálogo de selección de fecha
+    val datePickerDialog = DatePickerDialog(
+        LocalContext.current,
+        R.style.CustomDatePickerDialog,
+        { _, year, month, dayOfMonth ->
+            selectedYear = year
+            selectedMonth = month
+            selectedDay = dayOfMonth
+            selectedDate = "${selectedYear}-${String.format("%02d", selectedMonth + 1)}-${String.format("%02d", selectedDay)}"
+            onDateSelected(selectedDate)
+        },
+        selectedYear,
+        selectedMonth,
+        selectedDay
+    )
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Caja de texto no editable
+        OutlinedTextField(
+            value = selectedDate,
+            onValueChange = {}, // No permite escritura manual
+            readOnly = true,
+            label = { Text("Fecha") },
+            modifier = Modifier.weight(1f),
+            textStyle = TextStyle(fontSize = 16.sp),
+            enabled = false // Deshabilita interacciones
+        )
+
+        // Ícono para seleccionar la fecha
+        IconButton(onClick = { datePickerDialog.show() }) {
+            Icon(
+                imageVector = Icons.Default.CalendarMonth,
+                contentDescription = "Seleccionar fecha",
+                tint = Primary
+            )
+        }
+    }
+}
+
+
+@Composable
+fun DatePicker2(
+    modifier: Modifier = Modifier,
+    onDateSelected: (String) -> Unit = {}
+) {
+    // Obtener la fecha actual
+    val calendar = Calendar.getInstance()
+
+    // Estados para la fecha seleccionada
+    var selectedYear by remember { mutableStateOf(calendar.get(Calendar.YEAR)) }
+    var selectedMonth by remember { mutableStateOf(calendar.get(Calendar.MONTH)) }
+    var selectedDay by remember { mutableStateOf(calendar.get(Calendar.DAY_OF_MONTH)) }
+    var selectedDate by remember {
+        mutableStateOf("${selectedYear}-${String.format("%02d", selectedMonth + 1)}-${String.format("%02d", selectedDay)}")
+    }
+
+    // Mostrar el diálogo de selección de fecha
+    val datePickerDialog = DatePickerDialog(
+        LocalContext.current,
+        { _, year, month, dayOfMonth ->
+            selectedYear = year
+            selectedMonth = month
+            selectedDay = dayOfMonth
+            selectedDate = "${selectedYear}-${String.format("%02d", selectedMonth + 1)}-${String.format("%02d", selectedDay)}"
+            onDateSelected(selectedDate)
+        },
+        selectedYear,
+        selectedMonth,
+        selectedDay
+    )
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Fecha seleccionada: $selectedDate",
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(onClick = { datePickerDialog.show() }) {
+            Text(text = "Seleccionar fecha")
+        }
     }
 }

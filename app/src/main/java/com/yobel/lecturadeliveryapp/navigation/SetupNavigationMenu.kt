@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.model.Enterprise
 import com.yobel.lecturadeliveryapp.presentation.menu.list_label.ListLabelScreen
 import com.yobel.lecturadeliveryapp.presentation.menu.read_label.ReadLabelScreen
+import com.yobel.lecturadeliveryapp.presentation.menu.sync.SynScreen
 
 @Composable
 fun SetupNavigationMenu(
@@ -38,6 +39,16 @@ fun SetupNavigationMenu(
         composable(route = ScreenMenu.List.route){
             onChangeVisibleBottomBar(true)
             ListLabelScreen(
+                paddingValues = paddingValues,
+                enterprise = enterprise,
+                userName = userName,
+                userCode = userCode,
+                checkPrint = checkPrint
+            )
+        }
+        composable(route = ScreenMenu.Sync.route){
+            onChangeVisibleBottomBar(true)
+            SynScreen(
                 paddingValues = paddingValues,
                 enterprise = enterprise,
                 userName = userName,

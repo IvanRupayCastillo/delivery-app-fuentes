@@ -1,10 +1,12 @@
 package com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.endpoints
 
 import com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.model.LabelDto
+import com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.model.SyncRequest
 import com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.model.UserDto
 import com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.model.WrapperListResponse
 import com.jotadev.jetcompose_2024_ii_ecoeats.data.networking.model.WrapperResponse
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -31,6 +33,18 @@ interface MethodsApi {
         @Query("Cia") cia: String,
         @Query("Usuario") user:String
     ) : Response<WrapperListResponse<LabelDto>>
+
+    @POST("ServicosLecturaPedidos/Service.svc/Sincroniza_Datos_Etiqueta")
+    suspend fun downloadRemoteData(
+        @Query("Cia") cia: String,
+        @Query("Fecha") date:String
+    ) : Response<WrapperListResponse<LabelDto>>
+
+    @POST("ServicosLecturaPedidos/Service.svc/Sincroniza_RegistroDatos_Etiqueta")
+    suspend fun syncRemoteData(
+        @Query("Cia") cia: String,
+        @Body request: List<SyncRequest>
+    ) : Response<WrapperResponse<Nothing>>
 
 
 

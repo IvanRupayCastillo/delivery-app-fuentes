@@ -19,10 +19,12 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.QrCode
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.QrCode
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -46,6 +48,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -67,9 +70,14 @@ fun HomeScreen(
     checkPrint: Boolean,
     userName: String,
     userCode: String,
+    viewModel: HomeViewModel = hiltViewModel(),
     onLogOut: () -> Unit
 ) {
-
+    val context = LocalContext.current
+    LaunchedEffect(key1 = Unit) {
+        viewModel.saveData(enterprise.ciaId,userCode)
+        Util.scheduleInternetCheckWork(context)
+    }
 
     val items = listOf(
         BottomNavigationItem(
@@ -85,6 +93,13 @@ fun HomeScreen(
             unSelectedIcon = Icons.Outlined.Search,
             hasNews = false,
             route = ScreenMenu.List.route
+        ),
+        BottomNavigationItem(
+            title = "Sincronizar",
+            selectedIcon = Icons.Filled.Sync,
+            unSelectedIcon = Icons.Outlined.Sync,
+            hasNews = false,
+            route = ScreenMenu.Sync.route
         ),
     )
 
@@ -120,8 +135,6 @@ fun HomeScreen(
         )
     }
 
-
-    val context = LocalContext.current
 
     val currentRoute = navController.currentBackStackEntryAsState()?.value?.destination?.route
     LaunchedEffect(key1 = currentRoute) {

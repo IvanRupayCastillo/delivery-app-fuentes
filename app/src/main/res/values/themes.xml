@@ -2,4 +2,12 @@
 <resources>
 
     <style name="Theme.LecturaDeliveryApp" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="CustomDatePickerDialog" parent="Theme.Material3.DayNight.Dialog">
+            <!-- Cambia los colores aquí -->
+            <item name="colorPrimary">#FFAB0536</item> <!-- Rojo para el encabezado -->
+            <item name="colorAccent">#FFAB0536</item> <!-- Rojo para los botones -->
+    </style>
+
+
 </resources>

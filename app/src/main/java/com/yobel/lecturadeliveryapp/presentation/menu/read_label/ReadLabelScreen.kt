@@ -110,11 +110,11 @@ fun ReadLabelScreen(
             scanResult?.contents?.let {
                 // Aquí puedes manejar el resultado del código de barras
                 viewModel.readLabel(
-                    cia = enterprise.ciaId,
-                    user = userCode,
+                    //cia = enterprise.ciaId,
+                    //user = userCode,
                     trackId = it,
-                    ctr = "PE023430",
-                    container = viewModel.containerData
+                    //ctr = "PE023430",
+                    //container = viewModel.containerData
                 )
                 trackId = ""
             }
@@ -321,11 +321,11 @@ fun ReadLabelScreen(
                     return@IconButton
                 }
                 viewModel.readLabel(
-                    cia = enterprise.ciaId,
-                    user = userCode,
+                    //cia = enterprise.ciaId,
+                    //user = userCode,
                     trackId = trackId,
-                    ctr = "PE023430",
-                    container = viewModel.containerData
+                    //ctr = "PE023430",
+                    //container = viewModel.containerData
                 )
                 trackId = ""
             }) {

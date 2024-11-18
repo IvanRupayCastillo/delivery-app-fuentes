@@ -29,5 +29,12 @@ class AppModule {
         return context.getSharedPreferences("PREFERENCES_ENTERPRISE", 0)
     }
 
+    @Provides
+    @Singleton
+    @Named("provideDataSharePreferences")
+    fun provideDataSharePreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("PREFERENCES_DATA", 0)
+    }
+
 
 }
