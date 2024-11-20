@@ -217,12 +217,13 @@ fun SignInContent(
     submit: (String, String) -> Unit,
     showAlertDialog: (String) -> Unit
 ) {
+    //IRUPAY
 
     var user by remember {
-        mutableStateOf("IRUPAY")
+        mutableStateOf("")
     }
     var password by remember {
-        mutableStateOf("IRUPAY")
+        mutableStateOf("")
     }
     var visualTransformation by remember {
         mutableStateOf(true)
