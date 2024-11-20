@@ -9,4 +9,5 @@ data class Label(
     val upload:String,
     val trackId:String,
     val container:String,
+    val date:String
 )

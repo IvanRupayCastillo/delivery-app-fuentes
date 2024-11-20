@@ -20,7 +20,8 @@ fun List<LabelDto>.toLabelList():List<Label> = map {
         route = it.route,
         upload = it.upload,
         trackId = it.trackId,
-        container = it.container ?: ""
+        container = it.container ?: "",
+        date = it.date
     )
 }
 fun LabelDto.toLabel():Label {
@@ -31,7 +32,8 @@ fun LabelDto.toLabel():Label {
         route = route,
         upload = upload,
         trackId = trackId,
-        container = container ?: ""
+        container = container ?: "",
+        date = date
     )
 }
 
@@ -58,6 +60,7 @@ fun LabelEntity.toEntityLabel():Label {
         route = route,
         upload = upload,
         trackId = trackId,
-        container = container
+        container = container,
+        date = date
     )
 }

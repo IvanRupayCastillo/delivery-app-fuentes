@@ -194,7 +194,8 @@ fun ListLabelScreen(
                                         label.zone2,
                                         label.route,
                                         label.upload,
-                                        label.trackId
+                                        label.trackId,
+                                        label.date
                                     )
                                 }else{
                                     showDialogValidationPrinter = true

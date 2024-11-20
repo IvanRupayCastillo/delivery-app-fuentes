@@ -145,7 +145,8 @@ public class Printer {
             final String zona2,
             final String route,
             final String upload,
-            final String track
+            final String track,
+            final String date
     ) {
         new Thread(new Runnable() {
             public void run() {
@@ -160,7 +161,7 @@ public class Printer {
                     thePrinterConn.open();
 
                     // Código ZPL para imprimir "OK".
-                    String zplData = "^XA\n" +
+                    /*String zplData = "^XA\n" +
                             "\n" +
                             "^FX Top section with logo, name and address.\n" +
                             "^CF0,40\n" +
@@ -177,6 +178,36 @@ public class Printer {
                             "^FO220,235^FD" + track + "^FS\n" +
                             "\n" +
                             "^XZ";                     // Fin del trabajo de impresión
+
+                     */
+                     String zplData = "^XA\n" +
+                             "\n" +
+                             "^FX Top section with logo, name and address.\n" +
+                             "^CFF,25\n" +
+                             "^FO10,45^FD Fecha: ^FS\n" +
+                             "^CF0,40\n" +
+                             "^FO170,35^FD" + date + "^FS\n" +
+                             "\n" +
+                             "^CFF,25\n" +
+                             "^FO10,100^FD Secuencia: ^FS\n" +
+                             "^CF0,40\n" +
+                             "^FO220,90^FD" + sequence + "^FS\n" +
+                             "^FO180,125^GB190,3,3^FS\n" +
+                             "\n" +
+                             "^CFF,25\n" +
+                             "^FO10,165^FD zona1: ^FS\n" +
+                             "^CF0,40\n" +
+                             "^FO195,155^FD" + zona1 + "^FS\n" +
+                             "^FO180,190^GB190,3,3^FS\n" +
+                             "\n" +
+                             "^CFF,25\n" +
+                             "^FO10,230^FD zona2: ^FS\n" +
+                             "^CF0,40\n" +
+                             "^FO220,220^FD" + zona2 + "^FS\n" +
+                             "\n" +
+                             "^XZ";                     // Fin del trabajo de impresión
+
+
 
                     // Envía los datos a la impresora como un array de bytes.
                     thePrinterConn.write(zplData.getBytes());
